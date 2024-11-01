@@ -1,19 +1,25 @@
-import React from 'react';
-import { Tab, Tabs } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Tabs, Tab } from 'react-bootstrap';
 import HomePage from './pages/HomePage';
 import WorkoutPage from './pages/WorkoutPage';
-import 'normalize.css';                 // Import normalize.css for consistent styling
-import 'bootstrap/dist/css/bootstrap.min.css';  // Import Bootstrap CSS for styling
+import WorkoutDescriptionPage from './pages/WorkoutDescriptionPage';
+import 'normalize.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function App() {
+    const [currentPage, setCurrentPage] = useState('home');
+
     return (
-        <div className="container mt-5">
-            <Tabs defaultActiveKey="home" id="app-tabs" className="mb-3">
+        <div>
+            <Tabs activeKey={currentPage} onSelect={(page) => setCurrentPage(page)} className="mb-3">
                 <Tab eventKey="home" title="Home">
-                    <HomePage />
+                    {currentPage === 'home' && <HomePage />}
                 </Tab>
-                <Tab eventKey="workout" title="Workout">
-                    <WorkoutPage />
+                <Tab eventKey="workout" title="Workout Tracker">
+                    {currentPage === 'workout' && <WorkoutPage />}
+                </Tab>
+                <Tab eventKey="description" title="Workout Descriptions">
+                    {currentPage === 'description' && <WorkoutDescriptionPage />}
                 </Tab>
             </Tabs>
         </div>

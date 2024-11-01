@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import ProgressSection from '../components/ProgressSection';
-import DaySection from '../components/DaySection';
+import Section from '../components/Section';
+import SectionCard from '../components/SectionCard';
 import AddWorkoutModal from '../components/AddWorkoutModal';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 
 const initialWorkouts = [
     { day: "Monday", exercises: [], completedExercises: 0 },
@@ -10,10 +12,10 @@ const initialWorkouts = [
     { day: "Thursday", exercises: [], completedExercises: 0 },
     { day: "Friday", exercises: [], completedExercises: 0 },
     { day: "Saturday", exercises: [], completedExercises: 0 },
-    { day: "Sunday", exercises: [], completedExercises: 0 },
+    { day: "Sunday", exercises: [], completedExercises: 0 }
 ];
 
-export default function WorkoutPage(props) {
+export default function WorkoutPage() {
     const [workouts, setWorkouts] = useState(initialWorkouts);
     const [showModal, setShowModal] = useState(false);
     const [newWorkout, setNewWorkout] = useState({ name: '', type: '', reps: '', sets: '', duration: '', completed: false });
@@ -97,17 +99,40 @@ export default function WorkoutPage(props) {
     };
 
     return (
-        <div className="container mt-5">
+        <Container className="mt-5">
             <ProgressSection progress={progress} resetWorkouts={resetWorkouts} />
 
             {workouts.map(day => (
-                <DaySection
-                    key={day.day}
-                    day={day}
-                    onAddWorkout={handleShowModal}
-                    onToggleComplete={toggleComplete}
-                    onDeleteWorkout={deleteWorkout}
-                />
+                <Section key={day.day} title={day.day} isInitiallyOpen>
+                    <Row>
+                        {day.exercises.map((exercise, index) => (
+                            <Col md={6} className="mb-3" key={index}>
+                                <SectionCard
+                                    title={exercise.name}
+                                    type={exercise.type}
+                                    benefits={`Reps: ${exercise.reps}, Sets: ${exercise.sets}, Duration: ${exercise.duration}`}
+                                >
+                                    <Button
+                                        variant={exercise.completed ? "success" : "outline-secondary"}
+                                        onClick={() => toggleComplete(day.day, index)}
+                                        className="me-2"
+                                    >
+                                        {exercise.completed ? "Completed" : "Mark as Complete"}
+                                    </Button>
+                                    <Button
+                                        variant="danger"
+                                        onClick={() => deleteWorkout(day.day, index)}
+                                    >
+                                        Delete
+                                    </Button>
+                                </SectionCard>
+                            </Col>
+                        ))}
+                        <Button variant="primary" onClick={() => handleShowModal(day.day)} className="mt-3">
+                            Add Workout
+                        </Button>
+                    </Row>
+                </Section>
             ))}
 
             <AddWorkoutModal
@@ -117,6 +142,6 @@ export default function WorkoutPage(props) {
                 setNewWorkout={setNewWorkout}
                 onAddWorkout={handleAddWorkout}
             />
-        </div>
+        </Container>
     );
 }
