@@ -25,17 +25,6 @@ export default function WorkoutPage() {
     const completedExercises = workouts.reduce((sum, day) => sum + day.completedExercises, 0);
     const progress = totalExercises > 0 ? (completedExercises / totalExercises) * 100 : 0;
 
-    useEffect(() => {
-        const lastReset = localStorage.getItem('lastReset');
-        const today = new Date();
-        const isMonday = today.getDay() === 1;
-
-        if (isMonday && (!lastReset || new Date(lastReset).getDate() !== today.getDate())) {
-            resetWorkouts();
-            localStorage.setItem('lastReset', today);
-        }
-    }, []);
-
     const handleShowModal = (day) => {
         setSelectedDay(day);
         setShowModal(true);
@@ -112,25 +101,31 @@ export default function WorkoutPage() {
                                     type={exercise.type}
                                     benefits={`Reps: ${exercise.reps}, Sets: ${exercise.sets}, Duration: ${exercise.duration}`}
                                 >
-                                    <Button
-                                        variant={exercise.completed ? "success" : "outline-secondary"}
-                                        onClick={() => toggleComplete(day.day, index)}
-                                        className="me-2"
-                                    >
-                                        {exercise.completed ? "Completed" : "Mark as Complete"}
-                                    </Button>
-                                    <Button
-                                        variant="danger"
-                                        onClick={() => deleteWorkout(day.day, index)}
-                                    >
-                                        Delete
-                                    </Button>
+                                    {/* Buttons for complete and delete actions */}
+                                    <div className="d-flex justify-content-between mt-2">
+                                        <Button
+                                            variant={exercise.completed ? "success" : "outline-secondary"}
+                                            onClick={() => toggleComplete(day.day, index)}
+                                            size="sm"
+                                        >
+                                            {exercise.completed ? "Completed" : "Complete"}
+                                        </Button>
+                                        <Button
+                                            variant="outline-danger"
+                                            onClick={() => deleteWorkout(day.day, index)}
+                                            size="sm"
+                                        >
+                                            Delete
+                                        </Button>
+                                    </div>
                                 </SectionCard>
                             </Col>
                         ))}
-                        <Button variant="primary" onClick={() => handleShowModal(day.day)} className="mt-3">
-                            Add Workout
-                        </Button>
+                        <Col className="mt-3 text-center">
+                            <Button variant="outline-primary" size="sm" onClick={() => handleShowModal(day.day)}>
+                                Add Workout
+                            </Button>
+                        </Col>
                     </Row>
                 </Section>
             ))}

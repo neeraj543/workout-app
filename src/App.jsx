@@ -15,11 +15,12 @@ export default function App() {
                 <Tab eventKey="home" title="Home">
                     {currentPage === 'home' && <HomePage />}
                 </Tab>
-                <Tab eventKey="workout" title="Workout Tracker">
-                    {currentPage === 'workout' && <WorkoutPage />}
-                </Tab>
+
                 <Tab eventKey="description" title="Workout Descriptions">
                     {currentPage === 'description' && <WorkoutDescriptionPage />}
+                </Tab>
+                <Tab eventKey="workout" title="Workout Tracker">
+                    {currentPage === 'workout' && <WorkoutPage />}
                 </Tab>
             </Tabs>
         </div>
