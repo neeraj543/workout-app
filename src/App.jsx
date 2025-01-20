@@ -1,6 +1,6 @@
 // src/App.jsx
 
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
 import HomePage from './pages/HomePage';
 import WorkoutPage from './pages/WorkoutPage';
@@ -9,10 +9,15 @@ import workoutsData from './data/data';
 import 'normalize.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import WorkoutDescriptionPage from "./pages/WorkoutDescriptionPage.jsx";
+import { firestoreDB } from "./services/firebase";
+
+
 
 export default function App() {
+    console.log("Firestore DB instance:", firestoreDB);
     const [workouts, setWorkouts] = useState(workoutsData);
     const [currentPage, setCurrentPage] = useState('home');
+
 
     return (
         <div>
